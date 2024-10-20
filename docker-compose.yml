@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: fastapi_app
+    ports:
+      - "8001:8000"  # Using port 8001 on the host to avoid conflicts
+    volumes:
+      - .:/app
+    environment:
+      - MONGO_URL=mongodb://mongo:27017
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27018:27017"  # Using port 27018 for MongoDB to avoid conflicts
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
